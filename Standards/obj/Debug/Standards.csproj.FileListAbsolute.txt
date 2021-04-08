@@ -1,0 +1,6 @@
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\Standards\bin\Debug\Standards.dll
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\Standards\bin\Debug\Standards.pdb
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\Standards\obj\Debug\Standards.csprojAssemblyReference.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\Standards\obj\Debug\Standards.csproj.CoreCompileInputs.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\Standards\obj\Debug\Standards.dll
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\Standards\obj\Debug\Standards.pdb

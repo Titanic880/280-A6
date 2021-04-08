@@ -66,8 +66,7 @@ namespace A6_TCP.Forms
                 WriteLog($"{client.Client_ID} has disconnected!");
             }
             else
-                WriteLog($"{client.Client_ID} doesn't exist!", EventLogEntryType.Warning);
-            
+                WriteLog($"{client.Client_ID} doesn't exist!", EventLogEntryType.Warning);   
         }
 
         private void Mngr_ReceivedMessage(ClientManager client, string message)

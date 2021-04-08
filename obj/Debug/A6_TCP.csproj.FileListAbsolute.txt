@@ -8,3 +8,16 @@ C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\obj\Debug\A6_TCP.csproj.CoreCompileI
 C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\obj\Debug\A6_TCP.exe
 C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\obj\Debug\A6_TCP.pdb
 C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\obj\Debug\A6_TCP.Forms.Host.resources
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\bin\Debug\A6_TCP.exe.config
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\bin\Debug\A6_TCP.exe
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\bin\Debug\A6_TCP.pdb
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\bin\Debug\Standards.dll
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\bin\Debug\Standards.pdb
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.csprojAssemblyReference.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.Forms.Host.resources
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.Properties.Resources.resources
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.csproj.GenerateResource.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.csproj.CoreCompileInputs.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.csproj.CopyComplete
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.exe
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\obj\Debug\A6_TCP.pdb

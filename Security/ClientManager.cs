@@ -1,14 +1,9 @@
 ﻿using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Net.Sockets;
-using System.Text;
-using System.Linq;
 using Standards;
 using System.IO;
-using System;
 
 namespace A6_TCP.Security
 {

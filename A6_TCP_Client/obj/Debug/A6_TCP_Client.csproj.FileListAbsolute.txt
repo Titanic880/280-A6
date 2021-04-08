@@ -8,3 +8,19 @@ C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Clien
 C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.csproj.CoreCompileInputs.cache
 C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.exe
 C:\Users\Mitch\Desktop\PROG280 Derek\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.pdb
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\A6_TCP_Client.exe.config
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\A6_TCP_Client.exe
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\A6_TCP_Client.pdb
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\A6_TCP.exe
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\Standards.dll
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\A6_TCP.pdb
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\A6_TCP.exe.config
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\bin\Debug\Standards.pdb
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.csprojAssemblyReference.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.Client.resources
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.Properties.Resources.resources
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.csproj.GenerateResource.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.csproj.CoreCompileInputs.cache
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.csproj.CopyComplete
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.exe
+C:\Users\Mitch\Desktop\PROG280\A6_TCP\A6_TCP_Client\obj\Debug\A6_TCP_Client.pdb

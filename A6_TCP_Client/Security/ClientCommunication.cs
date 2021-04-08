@@ -1,12 +1,10 @@
 ﻿using System.Runtime.Serialization.Formatters.Binary;
+using static Standards.DataProperties;
 using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
-
-using static Standards.DataProperties;
-using Standards;
 
 namespace A6_TCP_Client.Security
 {
@@ -15,17 +13,12 @@ namespace A6_TCP_Client.Security
     /// </summary>
     public class ClientCommunication
     {
-        //public const int port = 25565;
         public readonly string Client_name = SystemInformation.ComputerName;
         public string Server_IP { get; private set; }
 
         //Connects to the server
         public event ConnectedEventHandler Connected;
         public delegate void ConnectedEventHandler(string servername, int port);
-
-        //runs if the connection fails
-        public event ConnectionFailedEventHandler ConnectionFailed;
-        public delegate void ConnectionFailedEventHandler(string servername, int port);
 
         //Runs when message is recieved
         public event ReceivedMessageEventHandler ReceivedMessage;
