@@ -78,10 +78,9 @@ namespace A6_TCP.Forms
 
         private void Mngr_ReceivedFile(ClientManager client, FileStandard message)
         {
-            string recievedFileMessage = $"New file recieved from:{client.Client_ID}";
-            RelayMessage(recievedFileMessage);
+            message.Sender = client.Client_ID.ToString();
             RelayMessage(message);
-            lstFiles.Name = "Name";
+            lstFiles.AccessibleName = "Name";
             lstFiles.Items.Add(message);
         }
 
@@ -99,7 +98,7 @@ namespace A6_TCP.Forms
         {
             //Loops through each User
             foreach (ClientManager c in Client_List)
-                c.SendMessage(message);
+                 c.SendMessage(message);
         }
 
         private void WriteLog(string Message, EventLogEntryType Severity = EventLogEntryType.Information)

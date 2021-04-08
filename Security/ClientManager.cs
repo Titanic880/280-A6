@@ -64,14 +64,15 @@ namespace A6_TCP.Security
 
         public void SendMessage(object Msg)
         {
-            //Checks everything that might throw an error
-            if (C_writer == null)
-                return;
-            else if (C_writer.BaseStream == null)
-                return;
+            try
+            {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(C_writer.BaseStream, Msg);
+            }
+            catch
+            {
 
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(C_writer.BaseStream, Msg);
+            }
         }
 
         #region Worker
@@ -109,7 +110,6 @@ namespace A6_TCP.Security
                     wkr.ReportProgress(1, st);
                 else if (o is FileStandard v) //Command support
                     wkr.ReportProgress(3, v);
-                else if (o is bool) { }
             }
         }
 

@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
 
+using Standards;
+
 namespace A6_TCP_Client.Security
 {
     /// <summary>
@@ -26,7 +28,7 @@ namespace A6_TCP_Client.Security
 
         //Runs when a file is recieved
         public event ReceivedFileEventHandler ReceivedFile;
-        public delegate void ReceivedFileEventHandler(byte[] message);
+        public delegate void ReceivedFileEventHandler(FileStandard message);
 
         //User Stack
         private TcpClient client;
@@ -78,7 +80,7 @@ namespace A6_TCP_Client.Security
             Connected(Server_IP, Port);
 
             IFormatter formatter = new BinaryFormatter();
-            //Main Loop checking if a new message was sent
+            //THIS IS WHERE THE APPLICATIONS CROSS
             while (true)
             {
                 if(nStream == null) //checks to see if the Stream is initilized
@@ -89,7 +91,7 @@ namespace A6_TCP_Client.Security
                     continue;
                 else if (o is string st) //Command support
                     ReceivedMessage(st);
-                else if (o is byte[] v) //Command support
+                else if (o is FileStandard v) //Command support
                     ReceivedFile(v);
             }
         }

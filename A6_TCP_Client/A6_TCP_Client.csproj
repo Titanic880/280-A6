@@ -80,10 +80,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\" />
-    <Folder Include="Framework\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\A6_TCP.csproj">
       <Project>{03dcf1d7-94b6-4648-82f9-669c6d0199d7}</Project>

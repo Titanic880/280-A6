@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Data;
 using System.Net;
+using Standards;
 using System.IO;
 using System;
 
@@ -15,22 +16,24 @@ namespace A6_TCP_Client
         /// <summary>
         /// Queue of messages
         /// </summary>
-        readonly Queue<string> IncomingMessages = new Queue<string>();
+        readonly Queue<object> IncomingMessages = new Queue<object>();
         readonly BackgroundWorker msgwkr = new BackgroundWorker();
         ClientCommunication Client_Comms;
+        private bool connected = false;
 
         public Client()
         {
             InitializeComponent();
             msgwkr.DoWork += Msgwkr_DoWork;
-            msgwkr.RunWorkerAsync();
+            //msgwkr.RunWorkerAsync();
         }
 
         private void Msgwkr_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (IncomingMessages.Count > 0)
-                lstUMessage.Items.Add(IncomingMessages.Dequeue());
+            while(true)
+                DisplayMessages();
         }
+        
 
         private void BtnSend_Click(object sender, EventArgs e)
         {
@@ -50,11 +53,7 @@ namespace A6_TCP_Client
         private void DisplayMessages()
         {
             while (IncomingMessages.Count > 0)
-            {
-                string tmp;
-                tmp = IncomingMessages.Dequeue();
-                lstUMessage.Items.Add(tmp);
-            }
+                lstUMessage.Items.Add(IncomingMessages.Dequeue());
         }
 
         private void BtnConnect_Click(object sender, EventArgs e)
@@ -63,6 +62,8 @@ namespace A6_TCP_Client
             Client_Comms.Connected += Serv_Connected;
             Client_Comms.ReceivedMessage += Client_Comms_ReceivedMessage;
             Client_Comms.ReceivedFile += Client_Comms_ReceivedFile;
+
+            if (connected) BtnConnect.Enabled = false;
         }
 
         private void Serv_Connected(string servername, int port)
@@ -81,8 +82,12 @@ namespace A6_TCP_Client
             BeginInvoke(new MethodInvoker(DisplayMessages));
         }
 
-        private void Client_Comms_ReceivedFile(byte[] message)
-            => File.WriteAllBytes("TestFileToWrite.txt", message);
+        private void Client_Comms_ReceivedFile(FileStandard message)
+        {
+            //lstFiles.Items.Add(message);
+            IncomingMessages.Enqueue(message);
+            BeginInvoke(new MethodInvoker(DisplayMessages));
+        }
 
         private void BtnFile_Click(object sender, EventArgs e)
         {
@@ -92,10 +97,15 @@ namespace A6_TCP_Client
             };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                Standards.FileStandard fileToSend = new Standards.FileStandard(ofd.FileName, File.ReadAllBytes(ofd.FileName));
+                FileStandard fileToSend = new FileStandard(ofd.FileName.Split('\\')[ofd.FileName.Split('\\').Length-1], File.ReadAllBytes(ofd.FileName));
                 Client_Comms.SendMessage(fileToSend);
-                MessageBox.Show("File Sent!");
             }
+        }
+
+        private void TbDownload_Click(object sender, EventArgs e)
+        {
+            if(lstFiles.SelectedItem is FileStandard standard)
+                File.WriteAllBytes("Local Download", standard.File);
         }
     }
 }

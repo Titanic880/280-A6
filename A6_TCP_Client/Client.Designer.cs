@@ -38,6 +38,8 @@ namespace A6_TCP_Client
             this.CbIP = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.BtnFile = new System.Windows.Forms.Button();
+            this.TbDownload = new System.Windows.Forms.Button();
+            this.lstFiles = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // lstUMessage
@@ -76,7 +78,7 @@ namespace A6_TCP_Client
             // 
             // BtnDisconnect
             // 
-            this.BtnDisconnect.Location = new System.Drawing.Point(31, 335);
+            this.BtnDisconnect.Location = new System.Drawing.Point(31, 329);
             this.BtnDisconnect.Name = "BtnDisconnect";
             this.BtnDisconnect.Size = new System.Drawing.Size(138, 23);
             this.BtnDisconnect.TabIndex = 8;
@@ -113,7 +115,7 @@ namespace A6_TCP_Client
             // 
             // BtnFile
             // 
-            this.BtnFile.Location = new System.Drawing.Point(31, 271);
+            this.BtnFile.Location = new System.Drawing.Point(175, 218);
             this.BtnFile.Name = "BtnFile";
             this.BtnFile.Size = new System.Drawing.Size(138, 23);
             this.BtnFile.TabIndex = 19;
@@ -121,11 +123,31 @@ namespace A6_TCP_Client
             this.BtnFile.UseVisualStyleBackColor = true;
             this.BtnFile.Click += new System.EventHandler(this.BtnFile_Click);
             // 
+            // TbDownload
+            // 
+            this.TbDownload.Location = new System.Drawing.Point(175, 247);
+            this.TbDownload.Name = "TbDownload";
+            this.TbDownload.Size = new System.Drawing.Size(138, 23);
+            this.TbDownload.TabIndex = 20;
+            this.TbDownload.Text = "Download File";
+            this.TbDownload.UseVisualStyleBackColor = true;
+            this.TbDownload.Click += new System.EventHandler(this.TbDownload_Click);
+            // 
+            // lstFiles
+            // 
+            this.lstFiles.FormattingEnabled = true;
+            this.lstFiles.Location = new System.Drawing.Point(175, 82);
+            this.lstFiles.Name = "lstFiles";
+            this.lstFiles.Size = new System.Drawing.Size(138, 134);
+            this.lstFiles.TabIndex = 21;
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 384);
+            this.Controls.Add(this.lstFiles);
+            this.Controls.Add(this.TbDownload);
             this.Controls.Add(this.BtnFile);
             this.Controls.Add(this.BtnConnect);
             this.Controls.Add(this.CbIP);
@@ -153,6 +175,8 @@ namespace A6_TCP_Client
         private System.Windows.Forms.ComboBox CbIP;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button BtnFile;
+        private System.Windows.Forms.Button TbDownload;
+        private System.Windows.Forms.ListBox lstFiles;
     }
 }
 
