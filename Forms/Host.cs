@@ -80,7 +80,7 @@ namespace A6_TCP.Forms
         {
             message.Sender = client.Client_ID.ToString();
             RelayMessage(message);
-            lstFiles.AccessibleName = "Name";
+            lstFiles.DisplayMember = "Name";
             lstFiles.Items.Add(message);
         }
 

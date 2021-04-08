@@ -51,7 +51,10 @@ namespace A6_TCP_Client
             {
                 object o = IncomingMessages.Dequeue();
                 if (o is FileStandard)
+                {
+                    lstFiles.DisplayMember = "Name";
                     lstFiles.Items.Add(o);
+                }
                 else
                     lstUMessage.Items.Add(o);
             }
