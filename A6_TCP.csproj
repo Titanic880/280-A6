@@ -52,7 +52,6 @@
     <Compile Include="Forms\Host.Designer.cs">
       <DependentUpon>Host.cs</DependentUpon>
     </Compile>
-    <Compile Include="Framework\DataInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\ClientManager.cs" />

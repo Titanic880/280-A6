@@ -38,10 +38,10 @@ namespace A6_TCP_Client.Security
         //User Stack
         private TcpClient client;
         private NetworkStream nStream;
-        private BinaryReader reader;
+        //private BinaryReader reader;
         private BinaryWriter writer;
 
-        private BackgroundWorker wkr = new BackgroundWorker();
+        readonly private BackgroundWorker wkr = new BackgroundWorker();
 
         public ClientCommunication(string Serverip)
         {
@@ -78,14 +78,14 @@ namespace A6_TCP_Client.Security
                 return;
             
             //Set up the read/write
-            reader = new BinaryReader(nStream);
+            //reader = new BinaryReader(nStream);
             writer = new BinaryWriter(nStream);
 
             //Checks if we're connected
             Connected(Server_IP, Port);
 
-            //Main Loop checking if a new message was sent
             IFormatter formatter = new BinaryFormatter();
+            //Main Loop checking if a new message was sent
             while (true)
             {
                 if(nStream == null) //checks to see if the Stream is initilized
@@ -94,34 +94,10 @@ namespace A6_TCP_Client.Security
                 object o = formatter.Deserialize(nStream);
                 if (o == null) //Checks to see if nothing is found
                     continue;
-                if (o is string) //Command support
-                    ReceivedMessage(o.ToString());
-                if (o is byte[]) //Command support
-                    ReceivedFile((byte[])o);
-                
-            }
-        }
-        private void Original()
-        {
-            while (true)
-            {
-                try
-                {
-                    IFormatter formatter = new BinaryFormatter();
-                    object o = formatter.Deserialize(nStream);
-                    if (o is string) //Command support
-                    {
-                        ReceivedMessage(o.ToString());
-                    }
-                    if (o is byte[]) //Command support
-                    {
-                        ReceivedFile((byte[])o);
-                    }
-                }
-                catch
-                {
-
-                }
+                else if (o is string st) //Command support
+                    ReceivedMessage(st);
+                else if (o is byte[] v) //Command support
+                    ReceivedFile(v);
             }
         }
     }

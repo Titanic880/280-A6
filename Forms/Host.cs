@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Net.Sockets;
@@ -53,10 +51,10 @@ namespace A6_TCP.Forms
         {
             //Adds the client to the List
             Client_List.Add(client);
-            WriteLog($">>>>Client#{client.Client_ID} has connected");
 
-            //Builds a new Client Manager (Memory leaks?)
+            WriteLog($">>>>Client#{client.Client_ID} has connected");
             RelayMessage($">>>>Client#{client.Client_ID} has connected");
+
             NewClient();
         }
 
@@ -67,7 +65,9 @@ namespace A6_TCP.Forms
                 RelayMessage($"{client.Client_ID} has disconnected!");
                 WriteLog($"{client.Client_ID} has disconnected!");
             }
-
+            else
+                WriteLog($"{client.Client_ID} doesn't exist!", EventLogEntryType.Warning);
+            
         }
 
         private void Mngr_ReceivedMessage(ClientManager client, string message)
@@ -77,12 +77,13 @@ namespace A6_TCP.Forms
             RelayMessage(msg);
         }
 
-        private void Mngr_ReceivedFile(ClientManager client, byte[] message)
+        private void Mngr_ReceivedFile(ClientManager client, FileStandard message)
         {
             string recievedFileMessage = $"New file recieved from:{client.Client_ID}";
             RelayMessage(recievedFileMessage);
             RelayMessage(message);
-            File.WriteAllBytes("testfile", message);
+            lstFiles.Name = "Name";
+            lstFiles.Items.Add(message);
         }
 
         private void Host_Load(object sender, EventArgs e)

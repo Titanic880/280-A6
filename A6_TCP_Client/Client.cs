@@ -22,9 +22,9 @@ namespace A6_TCP_Client
         /// <summary>
         /// Queue of messages
         /// </summary>
-        Queue<string> IncomingMessages = new Queue<string>();
+        readonly Queue<string> IncomingMessages = new Queue<string>();
 
-        BackgroundWorker msgwkr = new BackgroundWorker();
+        readonly BackgroundWorker msgwkr = new BackgroundWorker();
 
         public Client()
         {

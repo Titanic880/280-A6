@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Net.Sockets;
 using System.Text;
 using System.Linq;
+using Standards;
 using System.IO;
 using System;
 
@@ -18,13 +19,11 @@ namespace A6_TCP.Security
     {
         //Stalker of the port
         public static TcpListener Client_Listener;
-        
+
         //Client ID
         public static int ClientCounter;
         public string Client_Name;
         public int Client_ID;
-
-        string Latest;
 
         //Runs when a client first connects
         public event NewClientConnectedEventHandler NewClientConnected;
@@ -40,10 +39,10 @@ namespace A6_TCP.Security
 
         //Handles user files
         public event ReceivedFileEventHandler ReceivedFile;
-        public delegate void ReceivedFileEventHandler(ClientManager client, byte[] message);
+        public delegate void ReceivedFileEventHandler(ClientManager client, FileStandard message);
 
         //Main worker
-        private BackgroundWorker wkr = new BackgroundWorker();
+        private readonly BackgroundWorker wkr = new BackgroundWorker();
         //Generic Socket
         private Socket C_Socket;
         //network datapath
@@ -52,24 +51,17 @@ namespace A6_TCP.Security
         private BinaryReader C_reader;
         private BinaryWriter C_writer;
 
-
         public ClientManager(TcpListener listener)
         {
             //Sets Current client ID
             Client_ID = ClientCounter++;
             Client_Listener = listener;
-            //Names thread (easier to debug)
-            //System.Threading.Thread.CurrentThread.Name = "Client: " + Client_ID;
-            
-            //Sets the socket
-            //C_Socket = Client_Listener.AcceptSocket();
 
             //Configures worker
             wkr.WorkerSupportsCancellation = true;
             wkr.WorkerReportsProgress = true;
             wkr.DoWork += Wkr_DoWork;
             wkr.ProgressChanged += Wkr_ProgressChanged;
-            wkr.RunWorkerCompleted += Wkr_RunWorkerCompleted;
 
             //Runs worker
             wkr.RunWorkerAsync();
@@ -77,82 +69,52 @@ namespace A6_TCP.Security
 
         public void SendMessage(object Msg)
         {
-            try
-            {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(C_writer.BaseStream, Msg);
-            }
-            catch
-            {
+            //Checks everything that might throw an error
+            if (C_writer == null)
+                return;
+            else if (C_writer.BaseStream == null)
+                return;
 
-            }
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(C_writer.BaseStream, Msg);
         }
 
         #region Worker
         private void Wkr_DoWork(object sender, DoWorkEventArgs e)
         {
-            
-            try //KILL THIS
-            {
-                //Makes sure the socket is connected
-                C_Socket = Client_Listener.AcceptSocket();
-                //Creates the user Connection objects
-                wkr.ReportProgress(0);
-                C_nStream = new NetworkStream(C_Socket);
-                C_reader = new BinaryReader(C_nStream);
-                C_writer = new BinaryWriter(C_nStream); 
-                
-                IFormatter formatter = new BinaryFormatter(); //Moved out of loop (Memory leak inside)
-                while (true)
-                {
-                    try
-                    {
-                        object o = formatter.Deserialize(C_reader.BaseStream);
-                        if (o is string) //Command support
-                        {
-                            Latest = o.ToString();
-                            wkr.ReportProgress(1, Latest);
-                        }
-                        if (o is byte[]) //Command support
-                        {
-                            wkr.ReportProgress(3, (byte[])o);
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
-            
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-                //Send event to Log
-            }
-        }
-
-        //Trying to follow what derek had in class
-        private void Wkr1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            bool Done = false;
-
-            if (C_Socket == null)   //Makes sure the socket is connected
-                C_Socket = Client_Listener.AcceptSocket();
+            //Makes sure the socket is connected
+            C_Socket = Client_Listener.AcceptSocket();
+            //Creates the user Connection objects
+            wkr.ReportProgress(0);
+            if (C_Socket == null)
+                return;
 
             C_nStream = new NetworkStream(C_Socket);
+            if (C_nStream == null)
+                return;
+
             C_reader = new BinaryReader(C_nStream);
             C_writer = new BinaryWriter(C_nStream);
-            IFormatter formatter = new BinaryFormatter();
 
-            wkr.ReportProgress(0);
+            IFormatter formatter = new BinaryFormatter(); //Moved out of loop (Memory leak inside)
 
-            while (!Done)
+            while (true)
             {
+                //Error checking
+                if (C_reader == null)
+                    return;
+                else if (C_reader.BaseStream == null)
+                    return;
+
+                //Distrobution of information
                 object o = formatter.Deserialize(C_reader.BaseStream);
-                
-                if(o != null)
-                    wkr.ReportProgress(1, o);
+                if (o is null)
+                    continue;
+                else if (o is string st) //Command support
+                    wkr.ReportProgress(1, st);
+                else if (o is FileStandard v) //Command support
+                    wkr.ReportProgress(3, v);
+                else if (o is bool) { }
             }
         }
 
@@ -164,20 +126,16 @@ namespace A6_TCP.Security
                     NewClientConnected(this);
                     break;
                 case 1:
-                    ReceivedMessage(this,e.UserState.ToString());
+                    ReceivedMessage(this, e.UserState.ToString());
                     break;
                 case 2:
                     //Disconnect
+                    ClientDisconnected(this);
                     break;
                 case 3:
-                    ReceivedFile(this,(byte[])e.UserState);
+                    ReceivedFile(this, (FileStandard)e.UserState);
                     break;
             }
-        }
-
-        private void Wkr_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
         #endregion Worker
     }

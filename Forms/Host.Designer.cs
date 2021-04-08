@@ -36,6 +36,7 @@ namespace A6_TCP.Forms
             this.LblIP = new System.Windows.Forms.Label();
             this.lstError = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lstFiles = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // CbIP
@@ -99,11 +100,20 @@ namespace A6_TCP.Forms
             this.label1.TabIndex = 17;
             this.label1.Text = "Error Log";
             // 
+            // lstFiles
+            // 
+            this.lstFiles.FormattingEnabled = true;
+            this.lstFiles.Location = new System.Drawing.Point(302, 71);
+            this.lstFiles.Name = "lstFiles";
+            this.lstFiles.Size = new System.Drawing.Size(141, 186);
+            this.lstFiles.TabIndex = 18;
+            // 
             // Host
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 307);
+            this.ClientSize = new System.Drawing.Size(462, 307);
+            this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstError);
             this.Controls.Add(this.CbIP);
@@ -128,5 +138,6 @@ namespace A6_TCP.Forms
         private System.Windows.Forms.Label LblIP;
         private System.Windows.Forms.ListBox lstError;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox lstFiles;
     }
 }
