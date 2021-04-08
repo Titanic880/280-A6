@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Net.Sockets;
+﻿using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows.Forms;
+using System.Net.Sockets;
+using System.IO;
+
+using static Standards.DataProperties;
+using Standards;
 
 namespace A6_TCP_Client.Security
 {
@@ -17,9 +15,9 @@ namespace A6_TCP_Client.Security
     /// </summary>
     public class ClientCommunication
     {
-        public const int port = 25565;
+        //public const int port = 25565;
         public readonly string Client_name = SystemInformation.ComputerName;
-        public readonly string Server_name;
+        public string Server_IP { get; private set; }
 
         //Connects to the server
         public event ConnectedEventHandler Connected;
@@ -45,16 +43,15 @@ namespace A6_TCP_Client.Security
 
         private BackgroundWorker wkr = new BackgroundWorker();
 
-        public ClientCommunication(string Servername)
+        public ClientCommunication(string Serverip)
         {
-            Server_name = Servername;
+            Server_IP = Serverip;
 
             wkr.WorkerReportsProgress = true;
             wkr.WorkerSupportsCancellation = true;
             
             wkr.DoWork += Wkr_DoWork;
-            wkr.ProgressChanged += Wkr_ProgressChanged;
-
+            
             wkr.RunWorkerAsync();
         }
 
@@ -73,7 +70,7 @@ namespace A6_TCP_Client.Security
             client = new TcpClient();
 
             //Conenects client to the server
-            client.Connect(Server_name, port);
+            client.Connect(Server_IP, Port);
             nStream = client.GetStream();
             
             //Checks to see if the client or stream failed to init
@@ -85,7 +82,7 @@ namespace A6_TCP_Client.Security
             writer = new BinaryWriter(nStream);
 
             //Checks if we're connected
-            Connected(Server_name, port);
+            Connected(Server_IP, Port);
 
             //Main Loop checking if a new message was sent
             IFormatter formatter = new BinaryFormatter();
@@ -104,33 +101,6 @@ namespace A6_TCP_Client.Security
                 
             }
         }
-        /*
-        private void Test()
-        {
-            while (true)
-            {
-                try
-                {
-                    IFormatter formatter = new BinaryFormatter();
-                    object o = formatter.Deserialize(nStream);
-                    switch (o.GetType())
-                    {
-                        case string:
-
-                            break;
-
-                        case byte[]:
-
-                            break;
-                    }
-                }
-                catch
-                {
-
-                }
-            }
-
-        }*/
         private void Original()
         {
             while (true)
@@ -152,26 +122,6 @@ namespace A6_TCP_Client.Security
                 {
 
                 }
-            }
-        }
-
-        private void Wkr_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            switch (e.ProgressPercentage)
-            {
-                case 0:
-                    //connect
-                    break;
-                case 1:
-                    //message
-                    break;
-                case 2:
-                    //disconnect
-                    break;
-                case 3:
-                    //file
-                    
-                    break;
             }
         }
     }
