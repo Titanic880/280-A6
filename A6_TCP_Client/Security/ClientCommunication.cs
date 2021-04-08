@@ -30,6 +30,9 @@ namespace A6_TCP_Client.Security
         public event ReceivedFileEventHandler ReceivedFile;
         public delegate void ReceivedFileEventHandler(FileStandard message);
 
+        public event RecievedCommandResult CommandRes;
+        public delegate void RecievedCommandResult(CommandResult results);
+
         //User Stack
         private TcpClient client;
         private NetworkStream nStream;
@@ -90,6 +93,8 @@ namespace A6_TCP_Client.Security
                     ReceivedMessage(st);
                 else if (o is FileStandard v) //Command support
                     ReceivedFile(v);
+                else if (o is CommandResult res)
+                    CommandRes(res);
             }
         }
     }

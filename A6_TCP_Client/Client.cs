@@ -41,6 +41,7 @@ namespace A6_TCP_Client
             Client_Comms = new ClientCommunication(CbIP.Text);
             Client_Comms.ReceivedMessage += Client_Comms_ReceivedMessage;
             Client_Comms.ReceivedFile += Client_Comms_ReceivedFile;
+            Client_Comms.CommandRes += Client_Command_Result;
             Client_Comms.Connected += Serv_Connected;
         }
         #endregion
@@ -55,6 +56,14 @@ namespace A6_TCP_Client
                     lstFiles.DisplayMember = "Name";
                     lstFiles.Items.Add(o);
                 }
+                if(o is FileStandard[] ar)
+                {
+                    foreach (FileStandard a in ar)
+                    {
+                        lstFiles.DisplayMember = "Name";
+                        lstFiles.Items.Add(a);
+                    }
+                }
                 else
                     lstUMessage.Items.Add(o);
             }
@@ -62,8 +71,7 @@ namespace A6_TCP_Client
         #region Delegates
         private void Serv_Connected(string servername, int port)
         {
-            string incomingConnectionMessage = $">>>{servername}@{port}connected";
-            IncomingMessages.Enqueue(incomingConnectionMessage);
+            UI_ADD($">>>{servername}@{port}connected");
         }
 
         private void Client_Load(object sender, EventArgs e)
@@ -71,6 +79,16 @@ namespace A6_TCP_Client
                .Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
 
         private void Client_Comms_ReceivedMessage(string message)
+        {
+            UI_ADD(message);
+        }
+
+        private void Client_Command_Result(CommandResult results)
+        {
+            UI_ADD(results.Contents);
+        }
+
+        private void UI_ADD(object message)
         {
             IncomingMessages.Enqueue(message);
             BeginInvoke(new MethodInvoker(DisplayMessages));
