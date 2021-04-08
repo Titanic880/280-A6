@@ -71,9 +71,16 @@ namespace A6_TCP.Forms
 
         private void Mngr_ReceivedMessage(ClientManager client, string message)
         {
-            string msg = $">>>>{client.Client_ID}:{message}";
-            lstUMessage.Items.Add(msg);
-            RelayMessage(msg);
+            if (message.StartsWith("!"))    //Checks for command, if found it will generate a command File and send it
+            {
+                client.SendMessage(CommandGenerator(client, message));
+            }
+            else
+            {
+                string msg = $">>>>{client.Client_ID}:{message}";
+                lstUMessage.Items.Add(msg);
+                RelayMessage(msg);
+            }
         }
 
         private void Mngr_ReceivedFile(ClientManager client, FileStandard message)
@@ -99,6 +106,42 @@ namespace A6_TCP.Forms
             //Loops through each User
             foreach (ClientManager c in Client_List)
                  c.SendMessage(message);
+        }
+
+        private CommandResult CommandGenerator(ClientManager client, string Message)
+        {
+            CommandResult ret = new CommandResult();
+            //Cleans the command from the message
+            string command = Message.Split(' ')[0];
+            command.Trim('!');
+
+            //All commands exist within this switch (Scary i know); 
+            //if i need more than 3 i will make a class to handle them
+            switch (command.ToLower())
+            {
+                case "list":
+                    List<FileStandard> files = new List<FileStandard>();
+                    foreach (FileStandard a in lstFiles.Items) 
+                        files.Add(a);
+                    ret.Contents = files;
+                    ret.User = client.Client_ID.ToString();
+                    break;
+                case "get":
+                    for (int i = 0; i < lstFiles.Items.Count; i++)
+                        if (((FileStandard)lstFiles.Items[i]).Name == Message.Split(' ')[1])
+                            ret.Contents = lstFiles.Items[i];
+                    break;
+
+                    //Runs if no command was found
+                default:
+                    ret.Contents = "Command Does not exist!";
+                    break;
+            }
+            //if nothing is found within the command this will be added
+            if (ret.Contents == null)
+                ret.Contents = "Nothing was found!";
+
+            return ret;
         }
 
         private void WriteLog(string Message, EventLogEntryType Severity = EventLogEntryType.Information)
