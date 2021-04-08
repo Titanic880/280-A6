@@ -33,7 +33,6 @@ namespace A6_TCP_Client.Security
         //User Stack
         private TcpClient client;
         private NetworkStream nStream;
-        //private BinaryReader reader;
         private BinaryWriter writer;
 
         readonly private BackgroundWorker wkr = new BackgroundWorker();
@@ -72,8 +71,6 @@ namespace A6_TCP_Client.Security
             if (nStream == null || client == null)
                 return;
             
-            //Set up the read/write
-            //reader = new BinaryReader(nStream);
             writer = new BinaryWriter(nStream);
 
             //Checks if we're connected
