@@ -84,5 +84,15 @@
     <Folder Include="Forms\" />
     <Folder Include="Framework\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\A6_TCP.csproj">
+      <Project>{03dcf1d7-94b6-4648-82f9-669c6d0199d7}</Project>
+      <Name>A6_TCP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Standards\Standards.csproj">
+      <Project>{30056520-0cae-4bdd-a4e8-c8ba08d560ea}</Project>
+      <Name>Standards</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

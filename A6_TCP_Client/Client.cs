@@ -11,13 +11,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using A6_TCP_Client.Security;
 
 namespace A6_TCP_Client
 {
     public partial class Client : Form
     {
-        Security.ClientCommunication Client_Comms;
-        Queue<string> msgQ = new Queue<string>();
+
+        ClientCommunication Client_Comms;
+        /// <summary>
+        /// Queue of messages
+        /// </summary>
+        Queue<string> IncomingMessages = new Queue<string>();
 
         BackgroundWorker msgwkr = new BackgroundWorker();
 
@@ -30,8 +35,8 @@ namespace A6_TCP_Client
 
         private void Msgwkr_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (msgQ.Count > 0)
-                lstUMessage.Items.Add(msgQ.Dequeue());
+            while (IncomingMessages.Count > 0)
+                lstUMessage.Items.Add(IncomingMessages.Dequeue());
 
         }
 
@@ -45,25 +50,24 @@ namespace A6_TCP_Client
 
         private void BtnDisconnect_Click(object sender, EventArgs e)
         {
-            //Disconnects from current host
+            lstUMessage.Items.Clear();
+            Client_Comms.SendMessage($">>User {Client_Comms.Client_name} has Disconnected!");
+            Client_Comms = null;
         }
-
-
 
         private void DisplayMessages()
         {
-            while (msgQ.Count > 0)
+            while (IncomingMessages.Count > 0)
             {
                 string tmp;
-                tmp = msgQ.Dequeue();
+                tmp = IncomingMessages.Dequeue();
                 lstUMessage.Items.Add(tmp);
             }
-            
         }
 
         private void BtnConnect_Click(object sender, EventArgs e)
         {
-            Client_Comms = new Security.ClientCommunication(CbIP.Text);
+            Client_Comms = new ClientCommunication(CbIP.Text);
             Client_Comms.Connected += Serv_Connected;
             Client_Comms.ConnectionFailed += Serv_ConnectionFailed;
             Client_Comms.ReceivedMessage += Client_Comms_ReceivedMessage;
@@ -74,25 +78,44 @@ namespace A6_TCP_Client
 
         private void Serv_Connected(string servername, int port)
         {
-            string incomingConnectionMessage = $">>>>{servername}@{port}connected";
-            msgQ.Enqueue(incomingConnectionMessage);
+            string incomingConnectionMessage = $">>>{servername}@{port}connected";
+            IncomingMessages.Enqueue(incomingConnectionMessage);
         }
-        private void Serv_ConnectionFailed(string servername, int port)
+        private void Serv_ConnectionFailed(string server_ip, int port)
         {
-            throw new NotImplementedException();
+            MessageBox.Show($"Failed to connect to {server_ip}:{port}");
         }
 
         private void Client_Load(object sender, EventArgs e)
         {
+            //Loads the combo box with current users ip (Change to a list from file)
             CbIP.DataSource = Dns
                 .GetHostEntry(SystemInformation.ComputerName)
                 .AddressList
                 .Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 .ToList();
         }
+        /// <summary>
+        /// Release version of the client Load (Loads to and from file for ip's)
+        /// </summary>
+        private void Client_Load_Release()
+        {
+            if (!File.Exists("Host_List"))
+            {
+                IPAddress[] lst = Dns
+                    .GetHostEntry(SystemInformation.ComputerName)
+                    .AddressList
+                    .Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    .ToArray();
+
+
+                //File.WriteAllBytes("Host_List");
+            }
+        }
+
         private void Client_Comms_ReceivedMessage(string message)
         {
-            msgQ.Enqueue(message);
+            IncomingMessages.Enqueue(message);
             this.BeginInvoke(new MethodInvoker(DisplayMessages));
         }
 

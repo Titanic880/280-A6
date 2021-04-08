@@ -81,6 +81,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="Standards\Standards.csproj">
+      <Project>{30056520-0cae-4bdd-a4e8-c8ba08d560ea}</Project>
+      <Name>Standards</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

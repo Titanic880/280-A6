@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A6_TCP", "A6_TCP.csproj", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A6_TCP_Client", "A6_TCP_Client\A6_TCP_Client.csproj", "{D9143B5C-4C49-450E-88BF-A2C6719CC839}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Standards", "Standards\Standards.csproj", "{30056520-0CAE-4BDD-A4E8-C8BA08D560EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D9143B5C-4C49-450E-88BF-A2C6719CC839}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9143B5C-4C49-450E-88BF-A2C6719CC839}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9143B5C-4C49-450E-88BF-A2C6719CC839}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30056520-0CAE-4BDD-A4E8-C8BA08D560EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30056520-0CAE-4BDD-A4E8-C8BA08D560EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30056520-0CAE-4BDD-A4E8-C8BA08D560EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30056520-0CAE-4BDD-A4E8-C8BA08D560EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

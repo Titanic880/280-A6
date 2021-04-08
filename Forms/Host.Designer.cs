@@ -34,6 +34,8 @@ namespace A6_TCP.Forms
             this.LblUserMessages = new System.Windows.Forms.Label();
             this.lstUMessage = new System.Windows.Forms.ListBox();
             this.LblIP = new System.Windows.Forms.Label();
+            this.lstError = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // CbIP
@@ -80,11 +82,30 @@ namespace A6_TCP.Forms
             this.LblIP.TabIndex = 11;
             this.LblIP.Text = "IP Address";
             // 
+            // lstError
+            // 
+            this.lstError.FormattingEnabled = true;
+            this.lstError.Location = new System.Drawing.Point(156, 71);
+            this.lstError.Name = "lstError";
+            this.lstError.Size = new System.Drawing.Size(140, 186);
+            this.lstError.TabIndex = 16;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(153, 56);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(50, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Error Log";
+            // 
             // Host
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(169, 307);
+            this.ClientSize = new System.Drawing.Size(319, 307);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lstError);
             this.Controls.Add(this.CbIP);
             this.Controls.Add(this.BtnStart);
             this.Controls.Add(this.LblUserMessages);
@@ -105,5 +126,7 @@ namespace A6_TCP.Forms
         private System.Windows.Forms.Label LblUserMessages;
         private System.Windows.Forms.ListBox lstUMessage;
         private System.Windows.Forms.Label LblIP;
+        private System.Windows.Forms.ListBox lstError;
+        private System.Windows.Forms.Label label1;
     }
 }

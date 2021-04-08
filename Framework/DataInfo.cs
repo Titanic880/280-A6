@@ -8,7 +8,7 @@ namespace A6_TCP.Framework
 {
     public static class DataInfo
     {
-        public const int port = 25565;
-        public static List<Security.ClientManager> Client_List = new List<Security.ClientManager>();
+        //public const int port = 25565;
+        //public static List<Security.ClientManager> Client_List = new List<Security.ClientManager>();
     }
 }

@@ -4,20 +4,21 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Net.Sockets;
-using System.Drawing;
+using A6_TCP.Security;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Net;
-using System;
 using System.IO;
+using Standards;
+using System;
 
 namespace A6_TCP.Forms
 {
     public partial class Host : Form
     {
         TcpListener listener;
-        Security.ClientManager mngr;
+        ClientManager mngr;
+        public static List<ClientManager> Client_List = new List<ClientManager>();
 
         public Host()
         {
@@ -30,10 +31,10 @@ namespace A6_TCP.Forms
             IPAddress servername = (IPAddress)CbIP.SelectedValue;
 
             //Makes the listener
-            listener = new TcpListener(servername, Framework.DataInfo.port);
+            listener = new TcpListener(servername, DataProperties.Port);
             listener.Start();
 
-            WriteLog($"Server Started on {servername}:{Framework.DataInfo.port}");
+            WriteLog($"Server Started on {servername}:{DataProperties.Port}");
 
             NewClient();
         }
@@ -41,17 +42,17 @@ namespace A6_TCP.Forms
         private void NewClient()
         {
             //Builds a new Manager (Memory leaks?)
-            mngr = new Security.ClientManager(listener);
+            mngr = new ClientManager(listener);
             mngr.NewClientConnected += Mngr_NewClientConnected;
             mngr.ClientDisconnected += Mngr_ClientDisconnected;
             mngr.ReceivedMessage += Mngr_ReceivedMessage;
             mngr.ReceivedFile += Mngr_ReceivedFile;
         }
 
-        private void Mngr_NewClientConnected(Security.ClientManager client)
+        private void Mngr_NewClientConnected(ClientManager client)
         {
             //Adds the client to the List
-            Framework.DataInfo.Client_List.Add(client);
+            Client_List.Add(client);
             WriteLog($">>>>Client#{client.Client_ID} has connected");
 
             //Builds a new Client Manager (Memory leaks?)
@@ -59,19 +60,24 @@ namespace A6_TCP.Forms
             NewClient();
         }
 
-        private void Mngr_ClientDisconnected(Security.ClientManager client)
+        private void Mngr_ClientDisconnected(ClientManager client)
         {
-            //Framework.DataInfo.Client_List.RemoveAt(client.Client_ID);
+            if (Client_List.Remove(client))
+            {
+                RelayMessage($"{client.Client_ID} has disconnected!");
+                WriteLog($"{client.Client_ID} has disconnected!");
+            }
+
         }
 
-        private void Mngr_ReceivedMessage(Security.ClientManager client, string message)
+        private void Mngr_ReceivedMessage(ClientManager client, string message)
         {
             string msg = $">>>>{client.Client_ID}:{message}";
             lstUMessage.Items.Add(msg);
             RelayMessage(msg);
         }
 
-        private void Mngr_ReceivedFile(Security.ClientManager client, byte[] message)
+        private void Mngr_ReceivedFile(ClientManager client, byte[] message)
         {
             string recievedFileMessage = $"New file recieved from:{client.Client_ID}";
             RelayMessage(recievedFileMessage);
@@ -79,11 +85,6 @@ namespace A6_TCP.Forms
             File.WriteAllBytes("testfile", message);
         }
 
-        /// <summary>
-        /// Form Load
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Host_Load(object sender, EventArgs e)
         {
             //Loads Addresses into CbIP
@@ -97,19 +98,15 @@ namespace A6_TCP.Forms
         private void RelayMessage(object message)
         {
             //Loops through each User
-            foreach (Security.ClientManager c in Framework.DataInfo.Client_List)
+            foreach (ClientManager c in Client_List)
                 c.SendMessage(message);
         }
 
-       /// <summary>
-       /// Writes to log Listbox
-       /// </summary>
-       /// <param name="Message"></param>
-       /// <param name="Severity"></param>
         private void WriteLog(string Message, EventLogEntryType Severity = EventLogEntryType.Information)
         {
-            lstUMessage.Items.Add(Message);
-            lstUMessage.SelectedIndex = lstUMessage.Items.Count - 1;
+            if (Severity != EventLogEntryType.Information)
+                File.AppendAllText("ErrorLog", $"{Severity}::{Message}");
+            lstError.Items.Add($"{Severity}::{Message}");
         }
     }
 }

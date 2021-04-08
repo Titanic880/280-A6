@@ -21,6 +21,7 @@ namespace A6_TCP.Security
         
         //Client ID
         public static int ClientCounter;
+        public string Client_Name;
         public int Client_ID;
 
         string Latest;
