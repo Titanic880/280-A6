@@ -17,24 +17,10 @@ namespace A6_TCP_Client
         /// Queue of messages
         /// </summary>
         readonly Queue<object> IncomingMessages = new Queue<object>();
-        readonly BackgroundWorker msgwkr = new BackgroundWorker();
         ClientCommunication Client_Comms;
-        private bool connected = false;
+        public Client() => InitializeComponent();
 
-        public Client()
-        {
-            InitializeComponent();
-            msgwkr.DoWork += Msgwkr_DoWork;
-            //msgwkr.RunWorkerAsync();
-        }
-
-        private void Msgwkr_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while(true)
-                DisplayMessages();
-        }
-        
-
+        #region Buttons
         private void BtnSend_Click(object sender, EventArgs e)
         {
             //Gets the message and sets TB to null (Empty)
@@ -50,22 +36,27 @@ namespace A6_TCP_Client
             Client_Comms = null;
         }
 
-        private void DisplayMessages()
-        {
-            while (IncomingMessages.Count > 0)
-                lstUMessage.Items.Add(IncomingMessages.Dequeue());
-        }
-
         private void BtnConnect_Click(object sender, EventArgs e)
         {
             Client_Comms = new ClientCommunication(CbIP.Text);
-            Client_Comms.Connected += Serv_Connected;
             Client_Comms.ReceivedMessage += Client_Comms_ReceivedMessage;
             Client_Comms.ReceivedFile += Client_Comms_ReceivedFile;
-
-            if (connected) BtnConnect.Enabled = false;
+            Client_Comms.Connected += Serv_Connected;
         }
+        #endregion
 
+        private void DisplayMessages()
+        {
+            while (IncomingMessages.Count > 0)
+            {
+                object o = IncomingMessages.Dequeue();
+                if (o is FileStandard)
+                    lstFiles.Items.Add(o);
+                else
+                    lstUMessage.Items.Add(o);
+            }
+        }
+        #region Delegates
         private void Serv_Connected(string servername, int port)
         {
             string incomingConnectionMessage = $">>>{servername}@{port}connected";
@@ -81,7 +72,9 @@ namespace A6_TCP_Client
             IncomingMessages.Enqueue(message);
             BeginInvoke(new MethodInvoker(DisplayMessages));
         }
+        #endregion Delegates
 
+        #region File Handling
         private void Client_Comms_ReceivedFile(FileStandard message)
         {
             //lstFiles.Items.Add(message);
@@ -105,7 +98,8 @@ namespace A6_TCP_Client
         private void TbDownload_Click(object sender, EventArgs e)
         {
             if(lstFiles.SelectedItem is FileStandard standard)
-                File.WriteAllBytes("Local Download", standard.File);
+                File.WriteAllBytes("Local Download.txt", standard.File);
         }
+        #endregion
     }
 }
