@@ -8,7 +8,7 @@ namespace Standards
 {
     public class CommandResult
     {
-        public string User { get; set; }
+        public object User { get; set; }
         public object Contents { get; set; }
         public DateTime Created { get; set; }
 

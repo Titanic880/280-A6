@@ -14,8 +14,8 @@ namespace A6_TCP.Forms
 {
     public partial class Host : Form
     {
-        TcpListener listener;
-        ClientManager mngr;
+        private TcpListener listener;
+        private ClientManager mngr;
         public static List<ClientManager> Client_List = new List<ClientManager>();
 
         public Host()
@@ -73,7 +73,12 @@ namespace A6_TCP.Forms
         {
             if (message.StartsWith("!"))    //Checks for command, if found it will generate a command File and send it
             {
-                client.SendMessage(CommandGenerator(client, message));
+                //Sends the command to the command Manager in the prebuilt format, and immediately returns to the user
+                client.SendMessage(CommandGenerator(new CommandRequest
+                {
+                    Client = client,
+                    Message = message
+                }));
             }
             else
             {
@@ -108,27 +113,34 @@ namespace A6_TCP.Forms
                  c.SendMessage(message);
         }
 
-        private CommandResult CommandGenerator(ClientManager client, string Message)
+        private CommandResult CommandGenerator(CommandRequest request)
         {
-            CommandResult ret = new CommandResult();
+            CommandResult ret = new CommandResult
+            {
+                User = request.Client
+            };
+            //Logs the user
+            lstCommands.Items.Add($"{((ClientManager)request.Client).Client_ID}::{request.Message}");
+
             //Cleans the command from the message
-            string command = Message.Split(' ')[0];
+            string command = request.Message.Split(' ')[0];
             command.Trim('!');
 
             //All commands exist within this switch (Scary i know); 
             //if i need more than 3 i will make a class to handle them
             switch (command.ToLower())
             {
+                //!list
                 case "list":
-                    List<FileStandard> files = new List<FileStandard>();
+                    List<string> files = new List<string>();
                     foreach (FileStandard a in lstFiles.Items) 
-                        files.Add(a);
+                        files.Add(a.Name);
                     ret.Contents = files;
-                    ret.User = client.Client_ID.ToString();
                     break;
+                    //!get
                 case "get":
                     for (int i = 0; i < lstFiles.Items.Count; i++)
-                        if (((FileStandard)lstFiles.Items[i]).Name == Message.Split(' ')[1])
+                        if (((FileStandard)lstFiles.Items[i]).Name == request.Message.Split(' ')[1])
                             ret.Contents = lstFiles.Items[i];
                     break;
 

@@ -37,6 +37,9 @@ namespace A6_TCP.Forms
             this.lstError = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lstFiles = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lstCommands = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // CbIP
@@ -108,11 +111,40 @@ namespace A6_TCP.Forms
             this.lstFiles.Size = new System.Drawing.Size(141, 186);
             this.lstFiles.TabIndex = 18;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(299, 56);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(59, 13);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "List of Files";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(446, 56);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "Commands Run";
+            // 
+            // lstCommands
+            // 
+            this.lstCommands.FormattingEnabled = true;
+            this.lstCommands.Location = new System.Drawing.Point(449, 71);
+            this.lstCommands.Name = "lstCommands";
+            this.lstCommands.Size = new System.Drawing.Size(141, 186);
+            this.lstCommands.TabIndex = 20;
+            // 
             // Host
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(462, 307);
+            this.ClientSize = new System.Drawing.Size(660, 307);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lstCommands);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstError);
@@ -139,5 +171,8 @@ namespace A6_TCP.Forms
         private System.Windows.Forms.ListBox lstError;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lstFiles;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox lstCommands;
     }
 }

@@ -51,13 +51,16 @@ namespace A6_TCP_Client
             while (IncomingMessages.Count > 0)
             {
                 object o = IncomingMessages.Dequeue();
-                if (o is FileStandard)
+                if (o is CommandResult result)
+                    CommandRes_DisplayMessage(result);
+                else if (o is FileStandard)
                 {
                     lstFiles.DisplayMember = "Name";
                     lstFiles.Items.Add(o);
                 }
-                if(o is FileStandard[] ar)
+                else if(o is FileStandard[] ar)
                 {
+                    lstFiles.Items.Clear();
                     foreach (FileStandard a in ar)
                     {
                         lstFiles.DisplayMember = "Name";
@@ -68,26 +71,26 @@ namespace A6_TCP_Client
                     lstUMessage.Items.Add(o);
             }
         }
-        #region Delegates
-        private void Serv_Connected(string servername, int port)
+        private void CommandRes_DisplayMessage(CommandResult result)
         {
-            UI_ADD($">>>{servername}@{port}connected");
+            if (result.Contents is string[] StrArr)
+            {
+                foreach (string a in StrArr)
+                    lstFiles.Items.Add(a);
+            }
         }
+        #region Delegates
 
         private void Client_Load(object sender, EventArgs e)
             => CbIP.DataSource = Dns.GetHostEntry(SystemInformation.ComputerName).AddressList
                .Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
-
+        private void Serv_Connected(string servername, int port)
+        => UI_ADD($">>>{servername}@{port}connected");
         private void Client_Comms_ReceivedMessage(string message)
-        {
-            UI_ADD(message);
-        }
-
+            => UI_ADD(message);
         private void Client_Command_Result(CommandResult results)
-        {
-            UI_ADD(results.Contents);
-        }
-
+            => UI_ADD(results);
+        
         private void UI_ADD(object message)
         {
             IncomingMessages.Enqueue(message);
@@ -118,8 +121,11 @@ namespace A6_TCP_Client
 
         private void TbDownload_Click(object sender, EventArgs e)
         {
-            if(lstFiles.SelectedItem is FileStandard standard)
+            if (lstFiles.SelectedItem is FileStandard standard)
                 File.WriteAllBytes("Local Download.txt", standard.File);
+            //Grabs the file
+            else if (lstFiles.SelectedItem is string)
+                Client_Comms.SendMessage($"!get {lstFiles.SelectedItem}");
         }
         #endregion
     }

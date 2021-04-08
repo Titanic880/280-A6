@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandRequest.cs" />
+    <Compile Include="CommandResult.cs" />
     <Compile Include="DataProperties.cs" />
     <Compile Include="FileStandard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
