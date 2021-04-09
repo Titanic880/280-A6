@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Net.Sockets;
 using Standards;
 using System.IO;
+using System;
 
 namespace A6_TCP.Security
 {
@@ -69,7 +70,7 @@ namespace A6_TCP.Security
                 IFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(C_writer.BaseStream, Msg);
             }
-            catch
+            catch (Exception ex)
             {
 
             }

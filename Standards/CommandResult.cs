@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Standards
 {
+    [Serializable()]
     public class CommandResult
     {
         public object User { get; set; }

@@ -76,7 +76,7 @@ namespace A6_TCP.Forms
                 //Sends the command to the command Manager in the prebuilt format, and immediately returns to the user
                 client.SendMessage(CommandGenerator(new CommandRequest
                 {
-                    Client = client,
+                    Client = client.Client_ID,
                     Message = message
                 }));
             }
@@ -91,7 +91,6 @@ namespace A6_TCP.Forms
         private void Mngr_ReceivedFile(ClientManager client, FileStandard message)
         {
             message.Sender = client.Client_ID.ToString();
-            RelayMessage(message);
             lstFiles.DisplayMember = "Name";
             lstFiles.Items.Add(message);
         }
@@ -119,12 +118,13 @@ namespace A6_TCP.Forms
             {
                 User = request.Client
             };
+
             //Logs the user
-            lstCommands.Items.Add($"{((ClientManager)request.Client).Client_ID}::{request.Message}");
+            lstCommands.Items.Add($"{request.Client}::{request.Message}");
 
             //Cleans the command from the message
             string command = request.Message.Split(' ')[0];
-            command.Trim('!');
+            command = command.Trim('!');
 
             //All commands exist within this switch (Scary i know); 
             //if i need more than 3 i will make a class to handle them
@@ -135,7 +135,7 @@ namespace A6_TCP.Forms
                     List<string> files = new List<string>();
                     foreach (FileStandard a in lstFiles.Items) 
                         files.Add(a.Name);
-                    ret.Contents = files;
+                    ret.Contents = files.ToArray();
                     break;
                     //!get
                 case "get":

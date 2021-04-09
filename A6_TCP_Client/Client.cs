@@ -23,10 +23,13 @@ namespace A6_TCP_Client
         #region Buttons
         private void BtnSend_Click(object sender, EventArgs e)
         {
-            //Gets the message and sets TB to null (Empty)
-            string msg = TbMessage.Text;
-            TbMessage.Text = null;
-            Client_Comms.SendMessage(msg);
+            if (Client_Comms != null)
+            {
+                //Gets the message and sets TB to null (Empty)
+                string msg = TbMessage.Text;
+                TbMessage.Text = null;
+                Client_Comms.SendMessage(msg);
+            }
         }
 
         private void BtnDisconnect_Click(object sender, EventArgs e)
@@ -67,6 +70,11 @@ namespace A6_TCP_Client
                         lstFiles.Items.Add(a);
                     }
                 }
+                else if (o is string[] StrArr)
+                {
+                    foreach (string a in StrArr)
+                        lstFiles.Items.Add(a);
+                }
                 else
                     lstUMessage.Items.Add(o);
             }
@@ -89,7 +97,7 @@ namespace A6_TCP_Client
         private void Client_Comms_ReceivedMessage(string message)
             => UI_ADD(message);
         private void Client_Command_Result(CommandResult results)
-            => UI_ADD(results);
+            => UI_ADD(results.Contents);
         
         private void UI_ADD(object message)
         {
@@ -100,11 +108,8 @@ namespace A6_TCP_Client
 
         #region File Handling
         private void Client_Comms_ReceivedFile(FileStandard message)
-        {
-            //lstFiles.Items.Add(message);
-            IncomingMessages.Enqueue(message);
-            BeginInvoke(new MethodInvoker(DisplayMessages));
-        }
+        => UI_ADD(message);
+        
 
         private void BtnFile_Click(object sender, EventArgs e)
         {

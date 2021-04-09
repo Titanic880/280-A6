@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Standards
 {
+    [Serializable()]
     public class CommandRequest
     {
         public object Client { get; set; }
