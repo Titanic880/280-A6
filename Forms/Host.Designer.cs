@@ -154,7 +154,7 @@ namespace A6_TCP.Forms
             this.Controls.Add(this.lstUMessage);
             this.Controls.Add(this.LblIP);
             this.Name = "Host";
-            this.Text = "Host";
+            this.Text = "Generic Chat Host";
             this.Load += new System.EventHandler(this.Host_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
