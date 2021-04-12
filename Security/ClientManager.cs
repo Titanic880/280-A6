@@ -37,6 +37,14 @@ namespace A6_TCP.Security
         public event ReceivedFileEventHandler ReceivedFile;
         public delegate void ReceivedFileEventHandler(ClientManager client, FileStandard message);
 
+        //Handles commands
+        public event RecievedCommandReq RecievedCommand;
+        public delegate void RecievedCommandReq(ClientManager client, CommandRequest request);
+
+        //Sets the string username
+        public event UserNameSet SetUserName;
+        public delegate void UserNameSet(ClientManager UserName);
+
         //Main worker
         private readonly BackgroundWorker wkr = new BackgroundWorker();
         //Generic Socket
@@ -65,15 +73,18 @@ namespace A6_TCP.Security
 
         public void SendMessage(object Msg)
         {
-            try
-            {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(C_writer.BaseStream, Msg);
-            }
-            catch (Exception ex)
-            {
+            if (Msg == null)
+                return;
 
+            else if (C_writer == null)  //Checks for writer, if its null wait a second for initilization attempt
+            {
+                System.Threading.Thread.Sleep(1000);
+                if (C_writer == null)
+                    return;
             }
+
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(C_writer.BaseStream, Msg);
         }
 
         #region Worker
@@ -83,6 +94,7 @@ namespace A6_TCP.Security
             C_Socket = Client_Listener.AcceptSocket();
             //Creates the user Connection objects
             wkr.ReportProgress(0);
+            
             if (C_Socket == null)
                 return;
 
@@ -111,6 +123,12 @@ namespace A6_TCP.Security
                     wkr.ReportProgress(1, st);
                 else if (o is FileStandard v) //Command support
                     wkr.ReportProgress(3, v);
+                else if (o is DisconnectUser DCUser)
+                    wkr.ReportProgress(2, DCUser);
+                else if (o is ConnectUser CUser)
+                    wkr.ReportProgress(4, CUser);
+                else if (o is CommandRequest CmdReq)
+                    wkr.ReportProgress(5, CmdReq);
             }
         }
 
@@ -130,6 +148,13 @@ namespace A6_TCP.Security
                     break;
                 case 3:
                     ReceivedFile(this, (FileStandard)e.UserState);
+                    break;
+                case 4:
+                    this.Client_Name = ((ConnectUser)e.UserState).Name;
+                    SetUserName(this);
+                    break;
+                case 5:
+                    RecievedCommand(this, (CommandRequest)e.UserState);
                     break;
             }
         }

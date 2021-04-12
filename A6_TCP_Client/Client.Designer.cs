@@ -33,13 +33,15 @@ namespace A6_TCP_Client
             this.LblUserMessages = new System.Windows.Forms.Label();
             this.BtnSend = new System.Windows.Forms.Button();
             this.TbMessage = new System.Windows.Forms.TextBox();
-            this.BtnDisconnect = new System.Windows.Forms.Button();
             this.BtnConnect = new System.Windows.Forms.Button();
             this.CbIP = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.BtnFile = new System.Windows.Forms.Button();
             this.TbDownload = new System.Windows.Forms.Button();
             this.lstFiles = new System.Windows.Forms.ListBox();
+            this.TbUsername = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lstUMessage
@@ -47,8 +49,8 @@ namespace A6_TCP_Client
             this.lstUMessage.FormattingEnabled = true;
             this.lstUMessage.Location = new System.Drawing.Point(31, 26);
             this.lstUMessage.Name = "lstUMessage";
-            this.lstUMessage.Size = new System.Drawing.Size(138, 186);
-            this.lstUMessage.TabIndex = 4;
+            this.lstUMessage.Size = new System.Drawing.Size(236, 186);
+            this.lstUMessage.TabIndex = 3;
             // 
             // LblUserMessages
             // 
@@ -61,37 +63,28 @@ namespace A6_TCP_Client
             // 
             // BtnSend
             // 
-            this.BtnSend.Location = new System.Drawing.Point(31, 242);
+            this.BtnSend.Location = new System.Drawing.Point(31, 248);
             this.BtnSend.Name = "BtnSend";
-            this.BtnSend.Size = new System.Drawing.Size(138, 23);
-            this.BtnSend.TabIndex = 6;
+            this.BtnSend.Size = new System.Drawing.Size(236, 23);
+            this.BtnSend.TabIndex = 5;
             this.BtnSend.Text = "Send Message";
             this.BtnSend.UseVisualStyleBackColor = true;
             this.BtnSend.Click += new System.EventHandler(this.BtnSend_Click);
             // 
             // TbMessage
             // 
-            this.TbMessage.Location = new System.Drawing.Point(31, 218);
+            this.TbMessage.Location = new System.Drawing.Point(31, 222);
             this.TbMessage.Name = "TbMessage";
-            this.TbMessage.Size = new System.Drawing.Size(138, 20);
-            this.TbMessage.TabIndex = 7;
-            // 
-            // BtnDisconnect
-            // 
-            this.BtnDisconnect.Location = new System.Drawing.Point(31, 329);
-            this.BtnDisconnect.Name = "BtnDisconnect";
-            this.BtnDisconnect.Size = new System.Drawing.Size(138, 23);
-            this.BtnDisconnect.TabIndex = 8;
-            this.BtnDisconnect.Text = "Disconnect";
-            this.BtnDisconnect.UseVisualStyleBackColor = true;
-            this.BtnDisconnect.Click += new System.EventHandler(this.BtnDisconnect_Click);
+            this.TbMessage.Size = new System.Drawing.Size(236, 20);
+            this.TbMessage.TabIndex = 4;
+            this.TbMessage.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TbMessage_PreviewKeyDown);
             // 
             // BtnConnect
             // 
-            this.BtnConnect.Location = new System.Drawing.Point(175, 53);
+            this.BtnConnect.Location = new System.Drawing.Point(273, 307);
             this.BtnConnect.Name = "BtnConnect";
             this.BtnConnect.Size = new System.Drawing.Size(138, 23);
-            this.BtnConnect.TabIndex = 18;
+            this.BtnConnect.TabIndex = 2;
             this.BtnConnect.Text = "Connect";
             this.BtnConnect.UseVisualStyleBackColor = true;
             this.BtnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
@@ -99,15 +92,15 @@ namespace A6_TCP_Client
             // CbIP
             // 
             this.CbIP.FormattingEnabled = true;
-            this.CbIP.Location = new System.Drawing.Point(175, 26);
+            this.CbIP.Location = new System.Drawing.Point(273, 25);
             this.CbIP.Name = "CbIP";
             this.CbIP.Size = new System.Drawing.Size(138, 21);
-            this.CbIP.TabIndex = 17;
+            this.CbIP.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(211, 10);
+            this.label1.Location = new System.Drawing.Point(309, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 16;
@@ -115,20 +108,20 @@ namespace A6_TCP_Client
             // 
             // BtnFile
             // 
-            this.BtnFile.Location = new System.Drawing.Point(175, 218);
+            this.BtnFile.Location = new System.Drawing.Point(273, 249);
             this.BtnFile.Name = "BtnFile";
             this.BtnFile.Size = new System.Drawing.Size(138, 23);
-            this.BtnFile.TabIndex = 19;
+            this.BtnFile.TabIndex = 7;
             this.BtnFile.Text = "Send File";
             this.BtnFile.UseVisualStyleBackColor = true;
             this.BtnFile.Click += new System.EventHandler(this.BtnFile_Click);
             // 
             // TbDownload
             // 
-            this.TbDownload.Location = new System.Drawing.Point(175, 247);
+            this.TbDownload.Location = new System.Drawing.Point(273, 278);
             this.TbDownload.Name = "TbDownload";
             this.TbDownload.Size = new System.Drawing.Size(138, 23);
-            this.TbDownload.TabIndex = 20;
+            this.TbDownload.TabIndex = 8;
             this.TbDownload.Text = "Download File";
             this.TbDownload.UseVisualStyleBackColor = true;
             this.TbDownload.Click += new System.EventHandler(this.TbDownload_Click);
@@ -136,23 +129,50 @@ namespace A6_TCP_Client
             // lstFiles
             // 
             this.lstFiles.FormattingEnabled = true;
-            this.lstFiles.Location = new System.Drawing.Point(175, 82);
+            this.lstFiles.Location = new System.Drawing.Point(273, 106);
             this.lstFiles.Name = "lstFiles";
             this.lstFiles.Size = new System.Drawing.Size(138, 134);
-            this.lstFiles.TabIndex = 21;
+            this.lstFiles.TabIndex = 6;
+            // 
+            // TbUsername
+            // 
+            this.TbUsername.Location = new System.Drawing.Point(273, 65);
+            this.TbUsername.Name = "TbUsername";
+            this.TbUsername.Size = new System.Drawing.Size(138, 20);
+            this.TbUsername.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(309, 49);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "User Name";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(287, 88);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(94, 13);
+            this.label3.TabIndex = 24;
+            this.label3.Text = "Command Outputs";
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 384);
+            this.ClientSize = new System.Drawing.Size(423, 368);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.TbUsername);
             this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.TbDownload);
             this.Controls.Add(this.BtnFile);
             this.Controls.Add(this.BtnConnect);
             this.Controls.Add(this.CbIP);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.BtnDisconnect);
             this.Controls.Add(this.TbMessage);
             this.Controls.Add(this.BtnSend);
             this.Controls.Add(this.LblUserMessages);
@@ -170,13 +190,15 @@ namespace A6_TCP_Client
         private System.Windows.Forms.Label LblUserMessages;
         private System.Windows.Forms.Button BtnSend;
         private System.Windows.Forms.TextBox TbMessage;
-        private System.Windows.Forms.Button BtnDisconnect;
         private System.Windows.Forms.Button BtnConnect;
         private System.Windows.Forms.ComboBox CbIP;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button BtnFile;
         private System.Windows.Forms.Button TbDownload;
         private System.Windows.Forms.ListBox lstFiles;
+        private System.Windows.Forms.TextBox TbUsername;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 

@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="CommandRequest.cs" />
     <Compile Include="CommandResult.cs" />
+    <Compile Include="ConnectUser.cs" />
     <Compile Include="DataProperties.cs" />
+    <Compile Include="DisconnectUser.cs" />
     <Compile Include="FileStandard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

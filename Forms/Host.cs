@@ -45,6 +45,13 @@ namespace A6_TCP.Forms
             mngr.ClientDisconnected += Mngr_ClientDisconnected;
             mngr.ReceivedMessage += Mngr_ReceivedMessage;
             mngr.ReceivedFile += Mngr_ReceivedFile;
+            mngr.SetUserName += Mngr_SetUserName;
+            mngr.RecievedCommand += Mngr_RecievedCommand;
+        }
+
+        private void Mngr_SetUserName(ClientManager UserName)
+        {
+            LogMessage($"User {UserName.Client_ID} has been renamed to {UserName.Client_Name}");
         }
 
         private void Mngr_NewClientConnected(ClientManager client)
@@ -52,40 +59,45 @@ namespace A6_TCP.Forms
             //Adds the client to the List
             Client_List.Add(client);
 
-            WriteLog($">>>>Client#{client.Client_ID} has connected");
-            RelayMessage($">>>>Client#{client.Client_ID} has connected");
+            //Gotta figure this out~
+            if(client.Client_Name != null)
+                LogMessage($">>>>Client#{client.Client_Name} has connected");
+            else
+                LogMessage($">>>>Client#{client.Client_ID} has connected");
+            
 
             NewClient();
+        }
+
+        private void LogMessage(string Message)
+        {
+            WriteLog(Message);
+            RelayMessage(Message);
         }
 
         private void Mngr_ClientDisconnected(ClientManager client)
         {
             if (Client_List.Remove(client))
             {
-                RelayMessage($"{client.Client_ID} has disconnected!");
-                WriteLog($"{client.Client_ID} has disconnected!");
+                LogMessage($"{client.Client_ID} has disconnected!");
+                //Decrements the users in list
+                ClientManager.ClientCounter--;
             }
             else
-                WriteLog($"{client.Client_ID} doesn't exist!", EventLogEntryType.Warning);   
+                WriteLog($"{client.Client_Name} doesn't exist!", EventLogEntryType.Warning);   
         }
 
         private void Mngr_ReceivedMessage(ClientManager client, string message)
         {
-            if (message.StartsWith("!"))    //Checks for command, if found it will generate a command File and send it
-            {
-                //Sends the command to the command Manager in the prebuilt format, and immediately returns to the user
-                client.SendMessage(CommandGenerator(new CommandRequest
-                {
-                    Client = client.Client_ID,
-                    Message = message
-                }));
-            }
-            else
-            {
-                string msg = $">>>>{client.Client_ID}:{message}";
-                lstUMessage.Items.Add(msg);
-                RelayMessage(msg);
-            }
+            string msg = $">>>>{client.Client_Name}:{message}";
+            lstUMessage.Items.Add(msg);
+            RelayMessage(msg);
+        }
+
+        private void Mngr_RecievedCommand(ClientManager client, CommandRequest request)
+        {
+            request.Client = client.Client_ID;
+            client.SendMessage(CommandGenerator(request));
         }
 
         private void Mngr_ReceivedFile(ClientManager client, FileStandard message)
@@ -114,34 +126,65 @@ namespace A6_TCP.Forms
 
         private CommandResult CommandGenerator(CommandRequest request)
         {
+            //Builds the command result Object
             CommandResult ret = new CommandResult
             {
                 User = request.Client
             };
 
-            //Logs the user
+            //Logs the user and the command
             lstCommands.Items.Add($"{request.Client}::{request.Message}");
 
             //Cleans the command from the message
             string command = request.Message.Split(' ')[0];
             command = command.Trim('!');
 
-            //All commands exist within this switch (Scary i know); 
-            //if i need more than 3 i will make a class to handle them
+            //All commands exist within this switch (Scary i know)
             switch (command.ToLower())
             {
-                //!list
                 case "list":
                     List<string> files = new List<string>();
                     foreach (FileStandard a in lstFiles.Items) 
                         files.Add(a.Name);
                     ret.Contents = files.ToArray();
                     break;
-                    //!get
+                    
                 case "get":
+                    //This solves a bug when it comes to files with a space in the name
+                    string File_Name = null;
+                    for (int i = 1; i < request.Message.Split(' ').Length; i++)
+                        File_Name += request.Message.Split(' ')[i] + " ";
+                    File_Name = File_Name.TrimEnd();
+
                     for (int i = 0; i < lstFiles.Items.Count; i++)
-                        if (((FileStandard)lstFiles.Items[i]).Name == request.Message.Split(' ')[1])
+                        if (((FileStandard)lstFiles.Items[i]).Name == File_Name)
+                        {
                             ret.Contents = lstFiles.Items[i];
+                            break;
+                        }
+                    break;
+                    
+                    //Returns a list of the current users
+                case "users":
+                    List<string> Usernames = new List<string>();
+                    //Loops through all users and adds them to the Usernames
+                    for(int i = 0; i < Client_List.Count; i++)
+                    {
+                        //
+                        if(Client_List[i].Client_ID != (int)request.Client)
+                        {
+                            if (Client_List[i].Client_Name == null || string.IsNullOrWhiteSpace(Client_List[i].Client_Name))
+                                Usernames.Add($"User ID: {Client_List[i].Client_ID}");
+                            else
+                                Usernames.Add(Client_List[i].Client_Name);
+                        }
+                    }
+                    ret.Contents = Usernames.ToArray();
+                    break;
+
+                case "ping":
+                    TimeSpan Pong = DateTime.Now - request.RequestTime;
+                    ret.Contents = Pong;
                     break;
 
                     //Runs if no command was found

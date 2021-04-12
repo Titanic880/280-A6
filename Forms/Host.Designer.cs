@@ -48,14 +48,14 @@ namespace A6_TCP.Forms
             this.CbIP.Location = new System.Drawing.Point(12, 32);
             this.CbIP.Name = "CbIP";
             this.CbIP.Size = new System.Drawing.Size(138, 21);
-            this.CbIP.TabIndex = 15;
+            this.CbIP.TabIndex = 0;
             // 
             // BtnStart
             // 
-            this.BtnStart.Location = new System.Drawing.Point(12, 263);
+            this.BtnStart.Location = new System.Drawing.Point(156, 30);
             this.BtnStart.Name = "BtnStart";
             this.BtnStart.Size = new System.Drawing.Size(138, 23);
-            this.BtnStart.TabIndex = 14;
+            this.BtnStart.TabIndex = 1;
             this.BtnStart.Text = "Open Connection";
             this.BtnStart.UseVisualStyleBackColor = true;
             this.BtnStart.Click += new System.EventHandler(this.BtnStart_Click);
@@ -74,8 +74,8 @@ namespace A6_TCP.Forms
             this.lstUMessage.FormattingEnabled = true;
             this.lstUMessage.Location = new System.Drawing.Point(12, 71);
             this.lstUMessage.Name = "lstUMessage";
-            this.lstUMessage.Size = new System.Drawing.Size(138, 186);
-            this.lstUMessage.TabIndex = 12;
+            this.lstUMessage.Size = new System.Drawing.Size(280, 186);
+            this.lstUMessage.TabIndex = 2;
             // 
             // LblIP
             // 
@@ -89,15 +89,15 @@ namespace A6_TCP.Forms
             // lstError
             // 
             this.lstError.FormattingEnabled = true;
-            this.lstError.Location = new System.Drawing.Point(156, 71);
+            this.lstError.Location = new System.Drawing.Point(298, 71);
             this.lstError.Name = "lstError";
-            this.lstError.Size = new System.Drawing.Size(140, 186);
-            this.lstError.TabIndex = 16;
+            this.lstError.Size = new System.Drawing.Size(280, 186);
+            this.lstError.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(153, 56);
+            this.label1.Location = new System.Drawing.Point(295, 56);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 13);
             this.label1.TabIndex = 17;
@@ -106,15 +106,15 @@ namespace A6_TCP.Forms
             // lstFiles
             // 
             this.lstFiles.FormattingEnabled = true;
-            this.lstFiles.Location = new System.Drawing.Point(302, 71);
+            this.lstFiles.Location = new System.Drawing.Point(12, 280);
             this.lstFiles.Name = "lstFiles";
-            this.lstFiles.Size = new System.Drawing.Size(141, 186);
-            this.lstFiles.TabIndex = 18;
+            this.lstFiles.Size = new System.Drawing.Size(280, 186);
+            this.lstFiles.TabIndex = 4;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(299, 56);
+            this.label2.Location = new System.Drawing.Point(9, 265);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 19;
@@ -123,7 +123,7 @@ namespace A6_TCP.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(446, 56);
+            this.label3.Location = new System.Drawing.Point(295, 265);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 13);
             this.label3.TabIndex = 21;
@@ -132,16 +132,16 @@ namespace A6_TCP.Forms
             // lstCommands
             // 
             this.lstCommands.FormattingEnabled = true;
-            this.lstCommands.Location = new System.Drawing.Point(449, 71);
+            this.lstCommands.Location = new System.Drawing.Point(298, 280);
             this.lstCommands.Name = "lstCommands";
-            this.lstCommands.Size = new System.Drawing.Size(141, 186);
-            this.lstCommands.TabIndex = 20;
+            this.lstCommands.Size = new System.Drawing.Size(280, 186);
+            this.lstCommands.TabIndex = 5;
             // 
             // Host
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(660, 307);
+            this.ClientSize = new System.Drawing.Size(601, 500);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lstCommands);
             this.Controls.Add(this.label2);
