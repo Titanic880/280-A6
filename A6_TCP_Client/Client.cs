@@ -79,67 +79,68 @@ namespace A6_TCP_Client
         /// </summary>
         private void DisplayMessages()
         {
+            //I am not going to litter this with comments as its easier to read the code itself
             while (IncomingMessages.Count > 0)
             {
                 object o = IncomingMessages.Dequeue();
                 if (o is CommandResult result)
-                    lstFiles.Items.Add(result.Contents);
+                    lstCmdOut.Items.Add(result.Contents);
                 else if (o is FileStandard FS)
                 {
-
                     if (FileOverride)
-                        for (int i = 0; i < lstFiles.Items.Count; i++)
-                            if ((string)lstFiles.Items[i] == FS.Name) //Finds and replaces string
+                        for (int i = 0; i < lstCmdOut.Items.Count; i++)
+                            if ((string)lstCmdOut.Items[i] == FS.Name) //Finds and replaces string
                             {
-                                lstFiles.Items.Remove(FS.Name);
-                                lstFiles.DisplayMember = "Name";
-                                lstFiles.Items.Insert(i, FS);
+                                lstCmdOut.Items.Remove(FS.Name);
+                                lstCmdOut.DisplayMember = "Name";
+                                lstCmdOut.Items.Insert(i, FS);
                                 MessageBox.Show($"{FS.Name} has been downloaded!");
                                 FileOverride = false;
                                 break;
                             }
                             else
                             {
-                                lstFiles.DisplayMember = "Name";
-                                lstFiles.Items.Add(FS);
+                                lstCmdOut.DisplayMember = "Name";
+                                lstCmdOut.Items.Add(FS);
                             }
                 }
                 else if (o is FileStandard[] ar)
                 {
-                    lstFiles.Items.Clear();
+                    lstCmdOut.Items.Clear();
                     foreach (FileStandard a in ar)
                     {
-                        lstFiles.DisplayMember = "Name";
-                        lstFiles.Items.Add(a);
+                        lstCmdOut.DisplayMember = "Name";
+                        lstCmdOut.Items.Add(a);
                     }
                 }
                 else if (o is string[] StrArr)
                 {
                     foreach (string a in StrArr)
-                        lstFiles.Items.Add(a);
+                        lstCmdOut.Items.Add(a);
                 }
                 else if (o is TimeSpan pong)
-                    lstFiles.Items.Add($"Pong! (Time taken: {pong})");
+                    lstCmdOut.Items.Add($"Pong! (Time taken: {pong})");
                 else
                     lstUMessage.Items.Add(o);
             }
         }
-        #region Delegates
-
+        #region Delegation
+        //Form Load
         private void Client_Load(object sender, EventArgs e)
             => CbIP.DataSource = Dns.GetHostEntry(SystemInformation.ComputerName).AddressList
                .Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
+        //Delegates
         private void Serv_Connected(string servername, int port)
             => UI_ADD($">>>{servername}@{port}connected");
         private void Client_Comms_ReceivedMessage(string message)
             => UI_ADD(message);
         private void Client_Command_Result(CommandResult results)
             => UI_ADD(results.Contents);
-        #endregion Delegates
-
-        #region File Handling
         private void Client_Comms_ReceivedFile(FileStandard message)
             => UI_ADD(message);
+        #endregion
+
+        #region File Handling
         
 
         private void BtnFile_Click(object sender, EventArgs e)
@@ -155,15 +156,16 @@ namespace A6_TCP_Client
             }
         }
 
-        private void TbDownload_Click(object sender, EventArgs e)
+
+        private void BtnDownload_Click(object sender, EventArgs e)
         {
-            if (lstFiles.SelectedItem is FileStandard standard)
+            if (lstCmdOut.SelectedItem is FileStandard standard)
                 File.WriteAllBytes("Local Download.txt", standard.File);
             //Grabs the file
-            else if (lstFiles.SelectedItem is string)
+            else if (lstCmdOut.SelectedItem is string)
             {
                 FileOverride = true;
-                Client_Comms.SendMessage($"!get {lstFiles.SelectedItem}");
+                Client_Comms.SendMessage($"!get {lstCmdOut.SelectedItem}");
             }
         }
         #endregion
@@ -179,6 +181,21 @@ namespace A6_TCP_Client
         /// </summary>
         private void SendToServer()
         {
+            if(TbMessage.Text.ToLower() == "!download")
+            {
+                if (lstCmdOut.SelectedItem is FileStandard standard)
+                    File.WriteAllBytes("Local Download.txt", standard.File);
+                else
+                    MessageBox.Show("File not found! (try !get first)");
+                return;
+            }
+            else if(TbMessage.Text.ToLower() == "!clear")
+            {
+                lstCmdOut.Items.Clear();
+                lstUMessage.Items.Clear();
+                TbMessage.Text = null;
+                return;
+            }
             if (Client_Comms != null)
             {
                 //Gets the message and sets TB to null (Empty)
@@ -199,6 +216,7 @@ namespace A6_TCP_Client
             }
         }
         #endregion
+
         private void TbMessage_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             //Checks if the connect is made
@@ -212,8 +230,8 @@ namespace A6_TCP_Client
                 //Switch of all used keys
                 switch (e.KeyCode)
                 {
-                    //Cycles to older message
-                    case Keys.Up:
+                    //Cycles to newer message
+                    case Keys.Down:
                         messagesPOS++;
 
                         if (messagesPOS < 0) //Loops to top
@@ -226,8 +244,8 @@ namespace A6_TCP_Client
                         else
                             TbMessage.Text = messages[messagesPOS];
                         break;
-                    //Cycles to newer message
-                    case Keys.Down:
+                    //Cycles to older message
+                    case Keys.Up:
                         messagesPOS--;
 
                         if (messagesPOS < 0) //Loops to top

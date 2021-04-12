@@ -142,6 +142,21 @@ namespace A6_TCP.Forms
             //All commands exist within this switch (Scary i know)
             switch (command.ToLower())
             {
+                //Needs to be manually updated
+                case "help":
+                    string[] commands = new string[]
+                    {
+                        "Help; displays this",
+                        "list; returns a list of files on the server",
+                        "clear; Clears the chat boxes",
+                        "get <FileName>; pulls a specific file",
+                        "download <FileName>; Downloads a file from a get",
+                        "ping; pings the server",
+                        "users; gets a list of active users"
+                    };
+                    ret.Contents = commands;
+                    break;
+
                 case "list":
                     List<string> files = new List<string>();
                     foreach (FileStandard a in lstFiles.Items) 
